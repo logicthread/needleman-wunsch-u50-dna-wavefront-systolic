@@ -60,4 +60,9 @@ Not scanned: git history (fresh repo), the evidence folder (private).
 3. Is `end-to-end 566.9 GCUPS` "kernel + on-card walk + ops readback" only? The host appears
    to exclude BO allocation/upload (≈45 KB of 2-bit sequences) — to be checked in Step 5.
 4. Does `sw_emu` work with `hls::task` at all? Never tried.
-5. Repo name, license, private/public — to ask before any push.
+5. Repo name, license, private/public — resolved: MIT, public, name chosen.
+
+### 2026-11-25 — publication decisions (user)
+* Headline build: **S1t** (on-card traceback); README states the S1t figures.
+* Repo: `needleman-wunsch-u50-dna-wavefront-systolic`, **public**, MIT, copyright holder `logicthread`.
+* Commit history rewritten once to the GitHub handle with a GitHub noreply address (placeholder author removed).

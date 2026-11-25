@@ -21,11 +21,7 @@ band scheduling, packing) that a human steered.
 | Theoretical peak at that clock | 3968 × 205 MHz ≈ 813 GCUPS | theoretical (arithmetic) | |
 | Best kernel-only of any build, **host** traceback | 878.6 GCUPS @ 246.5 MHz (build S1) | kernel-only, measured | `results/ledgers/linear.csv`, gate `09bbbe4e` |
 
-**Corrections to numbers I was first given** (files win): the figure "870 GCUPS at ~230 MHz"
-does not appear in any log, ledger or note. The two nearest measured values are 878.6
-GCUPS @ 246.5 MHz (S1, traceback on the host) and 803.4 GCUPS @ ≈205 MHz (S1t, on-card
-traceback). The algorithm is **Needleman–Wunsch (global)**, not Smith–Waterman (local); the
-code and notes say so throughout.
+**Note on figures.** An earlier internal summary quoted "870 GCUPS at ~230 MHz"; no log, ledger or note supports that figure, so it is not used here. The nearest measured values are 878.6 GCUPS @ 246.5 MHz (build S1, traceback on the host) and the S1t figures above (on-card traceback). The algorithm is **Needleman–Wunsch (global)**, not Smith–Waterman (local); the code and notes say so throughout.
 
 ## What it is
 
@@ -120,4 +116,4 @@ results/   raw run outputs and the hardware ledgers the numbers above come from
 docs/      ENVIRONMENT.md, WORKLOG.md (what was done, found, still open)
 ```
 
-License: _to be chosen_.
+License: [MIT](LICENSE).
