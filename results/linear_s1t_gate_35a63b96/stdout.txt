@@ -1,0 +1,14 @@
+=== nw_gate_host  NW_PE=3968  31 tiles x 128  iface=2  BASE-3 dirs  xclbin=design.xclbin ===
+device: xilinx_u50_gen3x16_xdma_base_5
+[check] m=7936 n=20000 bands=2 cells=1.587e+08  dir=1.0 MiB/port x 31
+[check] CPU reference score -9960 (568 ms)
+[check] on-card traceback descriptor: mem@0x0 dir0 at +4608 words
+[check] kernel score -9960 == CPU   time min 0.419 ms  median 0.419 ms over 1  -> 379.1 GCUPS (min)
+[check] ON-CARD traceback: status 0, 20002 ops, 124 fills, card path score -9960, kernel+walk 1.724 ms (walk ~1.305 ms), ops readback 0.363 ms -> path OK (end-to-end, == optimum)
+[check] card ops vs host walker: IDENTICAL (host 20002 ops)
+[perf] m=182528 n=181019 bands=46 cells=3.304e+10  dir=204.0 MiB/port x 31
+[perf] CPU reference score 81778 (116879 ms)
+[perf] on-card traceback descriptor: mem@0x0 dir0 at +45568 words
+[perf] kernel score 81778 == CPU   time min 41.127 ms  median 41.145 ms over 3  -> 803.4 GCUPS (min)
+[perf] ON-CARD traceback: status 0, 198650 ops, 1426 fills, card path score 81778, kernel+walk 54.921 ms (walk ~13.794 ms), ops readback 3.363 ms -> path OK (end-to-end, == optimum)
+RESULT: PASS  pe=3968  perf 3.304e+10 cells  kernel=41.127 ms  803.4 GCUPS  traceback=13.8 ms  END-TO-END 566.9 GCUPS  check=score/path perf=score/path
