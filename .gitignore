@@ -1,0 +1,30 @@
+# Vitis / Vivado / XRT build artifacts
+build/
+*.xclbin
+*.xclbin.info
+*.xo
+*.dcp
+*.bit
+*.ltx
+_x/
+_xl/
+.Xil/
+.ipcache/
+.run/
+*.jou
+*.log
+*.str
+*.backup.*
+vitis_hls.log
+hs_err_pid*
+*.compile_summary
+*.link_summary
+xrt.run_summary
+# local environment, caches, OS junk
+scripts/env.local.sh
+third_party/HLS_arbitrary_Precision_Types/
+__pycache__/
+*.pyc
+*.o
+.DS_Store
+.venv/
