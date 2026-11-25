@@ -40,16 +40,16 @@ band scheduling, packing) that a human steered.
 
 ```mermaid
 flowchart LR
-  H[Host XRT<br/>packs q, r 2 bit/base] -->|mem BO| M[(HBM[0:31])]
-  M -->|ref, query bands| HEAD[head]
-  subgraph ARRAY[3968 PEs = 31 tiles x 128 PE, two SLRs]
+  H["Host XRT<br/>packs q, r 2 bit/base"] -->|"mem BO"| M[("HBM 0..31")]
+  M -->|"ref, query bands"| HEAD["head"]
+  subgraph ARRAY["3968 PEs = 31 tiles x 128 PE, two SLRs"]
     direction LR
-    HEAD --> T0[tile 0] --> T1[tile 1] --> TD[...] --> T30[tile 30] --> TAIL[tail]
+    HEAD --> T0["tile 0"] --> T1["tile 1"] --> TD["..."] --> T30["tile 30"] --> TAIL["tail"]
   end
-  TAIL -->|band boundary<br/>BRAM wrap FIFO| HEAD
-  T0 & T1 & T30 -->|base-3 directions<br/>one AXI master per tile| M
-  M -->|direction buffers| WALK[on-card traceback walker]
-  WALK -->|edit script, ~50 KB| H
+  TAIL -->|"band boundary<br/>BRAM wrap FIFO"| HEAD
+  T0 & T1 & T30 -->|"base-3 directions"| M
+  M -->|"direction beats, fetched on demand"| WALK["on-card traceback walker"]
+  WALK -->|"edit script (2 bit/step)"| H
 ```
 
 ## The agent search (provisional — exact table in `docs/ITERATIONS.md`, Step 2)
