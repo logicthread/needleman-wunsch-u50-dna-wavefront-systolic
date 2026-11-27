@@ -52,17 +52,27 @@ flowchart LR
   WALK -->|"edit script (2 bit/step)"| H
 ```
 
-## The agent search (provisional — exact table in `docs/ITERATIONS.md`, Step 2)
+## The agent search
 
 Knobs: PE count (512 … 4800), PEs per tile (128/160), tile count and SLR split, HLS
-`hls::task` ring vs one dataflow region per band, seam-relay depth (10/16 stages),
-floorplan constraints, direction packing (2-bit vs base-3), and Vivado placement
-directives. Objective: *scoring GCUPS, kernel-only, with traceback present in every build*,
-reported next to end-to-end, with numbers labelled measured / projected. Scale of the
-effort, counted from the archive: **20 retained build directories, 39 link-job logs, 83
-numbered note sections** (`NOTES.md`, N1…N82) and a 34-row hardware ledger. Whether each step was
-a grid or guided by the previous result, and which decisions were the human's, is what
-Step 2 documents with quotes; this README does not claim it yet.
+`hls::task` ring vs one dataflow region per band, seam position (16 or 10 tiles), floorplan
+constraints, direction packing (2-bit vs base-3), and Vivado placement directives.
+Objective: *scoring GCUPS, kernel-only, with traceback present in every build*, reported next
+to end-to-end, with numbers labelled measured / projected.
+
+Scale, counted from the archive ([`docs/ITERATIONS.md`](docs/ITERATIONS.md)): **47 link jobs**
+(5 on the earlier bit-parallel kernel, 40 on the wavefront kernel, 2 recovery jobs) over
+2026-10-06 → 10-30, ≈ 91 h of cluster wall-clock; 15 of the 40 wavefront links produced an
+xclbin directly, 12 died before place-and-route, 9 in it, 4 were cancelled; 83 numbered
+note sections and a 34-row hardware ledger.
+
+How it was run: **guided by hand, one result → one diagnosis → one next change, with two small
+grids** (a clock-ask probe and an S1c seam × fan-out 2×2); there is no automatic search
+harness in the archive. The user set direction, rules and several design ideas (5-in-8
+direction packing, single control bundle, decoupling tile from channel, on-card traceback);
+the agent ran the debugging between jobs and launched three relink variants unprompted. The
+user's own call on seam position (10 tiles in SLR0) measured *worse* (705.5 vs 822.8 GCUPS).
+Details, quotes and the full per-build table are in `docs/ITERATIONS.md`.
 
 ## Status, honestly
 

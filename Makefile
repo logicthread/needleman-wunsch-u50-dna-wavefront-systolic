@@ -16,9 +16,8 @@ FREQ     ?= 300
 PLATFORM ?= xilinx_u50_gen3x16_xdma_5_202210_1
 KERNEL   := nw_tile_u50
 SRC      := linear/src/kernel_tile_1b_s1t.cpp
-# Defines of the measured S1t build: DEFS of linear/scripts/link.sbatch plus
-# EXTRADEFS="-D WV_DIR_B3 -D WV_SEAM_RELAY". EXTRADEFS for the S1t job itself is INFERRED
-# from the S1c job (INFLIGHT.md:60); the exact submit line of job 113498 is UNKNOWN.
+# Defines of the measured S1t build. Confirmed against the `v++ -c` command line recorded in
+# that build's nw_tile_u50.xo.compile_summary (job 113498): identical macro list.
 DEFS     := -D NW_PE=$(PE) -D WV_TILE_PE=$(TILE_PE) -D WV_TRACEBACK -D WV_DIR_B3 -D WV_SEAM_RELAY \
             -D WV_QDEPTH=65536 -D WV_RDEPTH=65536 -D WV_BDEPTH=1048576 -D WV_DIRDEPTH=8388608
 # Bench arguments of the 181 kbp measurement (INFLIGHT.md, S1t entry; ledger row 35a63b96).

@@ -56,7 +56,7 @@ Not scanned: git history (fresh repo), the evidence folder (private).
 ### Open questions
 1. Which clock/GCUPS did the "870 @ 230 MHz / 913 peak" come from? (Perhaps a projection or
    a different conversation. Settled by: you telling me, or a build I have not found.)
-2. Exact `v++` macro list of the S1t compile (job 113498). Inferred in `Makefile`.
+2. ~~Exact `v++` macro list of the S1t compile (job 113498). Inferred in `Makefile`.~~ **Resolved in Step 2**: read from the build's `nw_tile_u50.xo.compile_summary`; identical to the Makefile `DEFS`.
 3. Is `end-to-end 566.9 GCUPS` "kernel + on-card walk + ops readback" only? The host appears
    to exclude BO allocation/upload (≈45 KB of 2-bit sequences) — to be checked in Step 5.
 4. Does `sw_emu` work with `hls::task` at all? Never tried.
@@ -66,3 +66,40 @@ Not scanned: git history (fresh repo), the evidence folder (private).
 * Headline build: **S1t** (on-card traceback); README states the S1t figures.
 * Repo: `needleman-wunsch-u50-dna-wavefront-systolic`, **public**, MIT, copyright holder `logicthread`.
 * Commit history rewritten once to the GitHub handle with a GitHub noreply address (placeholder author removed).
+
+## 2026-11-28 — Step 2: forensics (`docs/ITERATIONS.md`)
+
+### What was done
+1. Read the whole of `NOTES.md` (83 sections), `INFLIGHT.md`, `HANDOVER.md`, the hardware ledger
+   and the 429 user messages in the transcripts (timestamps are UTC; logs are IST).
+2. Parsed all 39 `tblink_*.log` link logs plus the S1t log (from the workspace tarball) for:
+   header, source md5, csim-gate result, `AUTO-FREQ-SCALING`, first fatal error, start/end time.
+   Parsed the harvested Vivado reports of every build that has them (kernel WNS from the Intra
+   Clock Table, kernel utilisation, SLR CLB %, SLL counts) and compared them with the notes.
+3. Wrote `docs/ITERATIONS.md`: 47 build attempts, answers to the seven forensic questions,
+   narrative, frontier table, list of places where files and notes disagree.
+
+### Findings that differ from what the notes say (files win)
+* **Job 105278** (first 3072-PE link) failed with an **OOM kill** during synthesis
+  (`Detected 1 oom-kill event(s)`); the notes never mention it.
+* **N68** mislabels SLR totals as kernel LUT (kernel is 281,836 LUT, not 277,966 + 173,699).
+* The ledger rounds clocks (213/214/205/180); logs say 213.9/214.4/205.3 and **183.7** for the
+  seam10+fan-out build (not 180). S1c efficiency is 96.9 %, not 97.3 %.
+* 2048 @ 300 kernel WNS is +0.044; the "+0.009" in the notes belongs to `hbm_aclk`.
+* The macro list of the S1t compile (open question 2) is now **confirmed** from the xo's
+  compile summary; the Makefile `DEFS` match it.
+* Build-node OS recovered from Vivado headers (Rocky 8.9 / CentOS Stream 8).
+
+### What could not be settled (UNKNOWN, in `ITERATIONS.md`)
+Transcripts start 2026-10-09T22:53Z, so who decided the Myers-era design choices, why the
+2048 @ 280 link 105168 was cancelled 14 min before completion, and who chose the 270 MHz ask
+of 107868 are not in evidence. The 107868 kernel clock capability is unresolved: `N64` and `N65`
+read the same −0.17 ns differently and the raw report shows a 10 ns period.
+
+### Counts corrected for the README
+20 retained `link_tb_*` build directories + `relink_3072_300`; 39 link logs + S1t's log +
+2 recovery logs; 47 build attempts in total.
+
+### Publication
+Nothing pushed yet for Step 2. `ITERATIONS.md` quotes the user's own messages (short
+quotations) as evidence of who decided what; review before pushing.
