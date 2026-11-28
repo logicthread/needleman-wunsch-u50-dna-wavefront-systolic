@@ -29,7 +29,7 @@ band scheduling, packing) that a human steered.
   (match +2, mismatch −1, gap −2, linear gap) — 3.3·10¹⁰ DP cells.
 * **PEs store score *differences*, not scores.** Adjacent DP cells differ by a small
   bounded amount (deltas live in [−2, 4], `linear/src/nw_wave.h:76`), so each PE keeps
-  3-bit deltas instead of wide absolute scores. Derivation: `docs/ARCHITECTURE.md` (Step 3).
+  3-bit deltas instead of wide absolute scores. Full derivation, proof of the value range and the dataflow: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 * **Bands.** The query is cut into bands of 3968 rows (one row per PE); the reference
   streams through the array once per band. Band boundaries wrap on-chip through a BRAM
   FIFO so the array never drains (`linear/src/kernel_tile_1b_s1t.cpp` header, "S1c").
@@ -123,7 +123,7 @@ make bench XCLBIN=build/hw/nw_tile_u50.xclbin  # 181 kbp, 3 reps
 ```
 linear/    headline design (S1t): src/ kernel + walker, host/, test/, cfg/ (HLS + link), tools/
 results/   raw run outputs and the hardware ledgers the numbers above come from
-docs/      ENVIRONMENT.md, WORKLOG.md (what was done, found, still open)
+docs/      ARCHITECTURE.md, ITERATIONS.md, ENVIRONMENT.md, WORKLOG.md (what was done, found, still open)
 ```
 
 License: [MIT](LICENSE).

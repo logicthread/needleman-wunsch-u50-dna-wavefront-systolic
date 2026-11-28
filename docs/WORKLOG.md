@@ -57,8 +57,7 @@ Not scanned: git history (fresh repo), the evidence folder (private).
 1. Which clock/GCUPS did the "870 @ 230 MHz / 913 peak" come from? (Perhaps a projection or
    a different conversation. Settled by: you telling me, or a build I have not found.)
 2. ~~Exact `v++` macro list of the S1t compile (job 113498). Inferred in `Makefile`.~~ **Resolved in Step 2**: read from the build's `nw_tile_u50.xo.compile_summary`; identical to the Makefile `DEFS`.
-3. Is `end-to-end 566.9 GCUPS` "kernel + on-card walk + ops readback" only? The host appears
-   to exclude BO allocation/upload (≈45 KB of 2-bit sequences) — to be checked in Step 5.
+3. ~~Scope of `end-to-end 566.9 GCUPS`~~ **Resolved in Step 3** (`ARCHITECTURE.md` §7, `nw_gate_host.cpp:334-353,496`): one `run.start()…wait()` with the walk enabled (kernel + walk, 54.921 ms) + device→host readback of descriptor and ops (3.363 ms) = 58.28 ms. Excludes host packing, buffer allocation, the 0xFF pre-fill/upload of the direction buffers, and the host→device upload of the two sequences.
 4. Does `sw_emu` work with `hls::task` at all? Never tried.
 5. Repo name, license, private/public — resolved: MIT, public, name chosen.
 
@@ -103,3 +102,30 @@ read the same −0.17 ns differently and the raw report shows a 10 ns period.
 ### Publication
 Nothing pushed yet for Step 2. `ITERATIONS.md` quotes the user's own messages (short
 quotations) as evidence of who decided what; review before pushing.
+
+## 2026-11-28 — Step 3: architecture (`docs/ARCHITECTURE.md`)
+
+### What was done
+1. Read the live kernel (`kernel_tile_1b_s1t.cpp`: ring, head, tile V12, tail, feed/qload, dirwriter, top),
+   the table (`nw_wave_lut.h`), the model header (`nw_wave.h`), the walker (`wv_tb_walk.h`), the
+   host timing code (`nw_gate_host.cpp`) and the gate output.
+2. Wrote `docs/ARCHITECTURE.md`: block diagram + code map with `file:line`, the delta recurrence
+   with a four-lemma proof (mod-3 congruence, lower bound, upper bound, closure) and the 18-case
+   PE table, bit widths, per-cycle dataflow, banding/boundary handoff, peak-to-measured waterfall,
+   base-3 layout and memory math, on-card walker cost model, physical limits, glossary.
+3. Recomputed with scratch Python (not committed): brute-force DP (3,000 random tables,
+   1.24 M cells) gives deltas {−2, 1, 4}, e ∈ {−1, 2}, 0 violations of H ≡ i+j (mod 3); the 128-entry
+   LUT equals the arithmetic; sizes: 3,342,322 beats = 204.0 MiB per tile, 6.631 GB total.
+
+### Findings (files win)
+* **g is 640, not 0**, at 181 kbp for the shipped variant (`WV_GAP_OF`, `WV_BWIN`); the header
+  comment `:14-20` is stale. Stride S = 181,659.
+* Model of the kernel: 8,360,539 cycles = 40.72 ms → 811.35 GCUPS; measured 41.127 ms (803.4).
+  0.6 % of the gap is UNKNOWN.
+* Only 18 of the 128 table entries are ever indexed; the file comments say "98 reachable"
+  (7 × 7 × 2 for the measured range before the 3-value property was found).
+* Capacity: the binding limit is one 256 MiB pseudo-channel per tile: ≈ 202 kbp square (derived).
+* Open question 3 (scope of the end-to-end figure) is **resolved** (see list above).
+
+### Not done
+No cycle-accurate simulation of the 3,968-PE kernel; no re-run on the card.
