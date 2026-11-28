@@ -1,0 +1,6 @@
+base3_weight_wrong: caught  TOTAL cases=7673 checks_passed=67442 checks_failed=16256 missing=0 skipped=46  first-failing: host==gold(x5) dirs_path==gold(x5) dirs==py_dirs(x5) card_score==gold(x5) 
+band_window_639: caught  TOTAL cases=7673 checks_passed=83641 checks_failed=57 missing=0 skipped=46  first-failing: dirs_path==gold(x9) host==gold(x8) card_ops==host_ops(x8) 
+walker_diag_step: caught  TOTAL cases=7673 checks_passed=74771 checks_failed=8927 missing=0 skipped=46  first-failing: card_score==gold(x9) card_ops_rescore==gold(x8) card_ops==host_ops(x8) 
+lut_tie_dir_changed: caught  TOTAL cases=7673 checks_passed=78740 checks_failed=4958 missing=0 skipped=46  first-failing: dirs==py_dirs(x25) 
+lut_dv_changed: caught  TOTAL cases=7673 checks_passed=78309 checks_failed=5389 missing=0 skipped=46  first-failing: kernel_score==gold(x25) 
+kernel mutants caught: 5 / 5

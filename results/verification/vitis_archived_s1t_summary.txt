@@ -1,0 +1,13 @@
+Archived Vitis checks of the S1t kernel (2026-10-30 IST), summarised from the original build logs.
+The logs themselves are not committed (they contain cluster user and path names). Only result lines are quoted.
+Source: private evidence archive, folder s1tw/ of the cluster archive dated 20261023.
+
+file             md5 (of the original log)          result lines
+csim512.txt      4541f9f4fba911b8be354a0a9375aae2   "22 cases, 0 failures"  "TILE TRACEBACK PASSED"   (Vitis HLS csim, NW_PE=512, -DWV_DIR_B3 -DWV_TRACEBACK)
+csim3968.txt     473f7df7ad4437771a34082d7437bb8d   "23 cases, 0 failures"  "TILE TRACEBACK PASSED"   (Vitis HLS csim, NW_PE=3968, -DWV_SEAM_RELAY)
+tbo_cosim.txt    220a71482c192f0a61fa94f70bafd96f   "4 cases, 0 failures"   "WALK PASSED"             (walker-only C/RTL cosim, xsim)
+cosim512.txt     e32d0b8140e57e5b0b4e3270798a6fd8   "5 cases, 0 failures"   "C/RTL co-simulation finished: PASS"   (whole kernel, NW_PE=512, Verilog)
+cosim512.rpt     fa442e54a5e8727385204308c648ba5e   Verilog: Pass, latency min/avg/max 3202/5900/9076 clock cycles, total execution 29620 cycles
+
+Case list of csim512 (per-case "ok" lines): K1 single band x6, K2 band boundary x3 (m = 511, 512, 513), K3 tile boundary x3
+(383, 384, 385), K4 tiny n x5, K5 identical x1, K6 n=NMIN-1 / NMIN / NMIN+33 x3, K7 n=1 two bands x1 = 22.

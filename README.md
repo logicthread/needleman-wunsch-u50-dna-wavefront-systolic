@@ -6,8 +6,8 @@ through an agent-driven search of the design space (tile size, tile count, floor
 band scheduling, packing) that a human steered.
 
 > **Status: working research prototype, partly measured.** One hardware measurement of the
-> headline build exists (3 timed repetitions in one run). Power, repeated-run spread,
-> optimized CPU/GPU baselines and an independent software cross-check are **not done
+> headline build exists (3 timed repetitions in one run). Power, repeated-run spread
+> and optimized CPU/GPU baselines are **not done
 > yet** — see [Status](#status-honestly).
 
 ## Headline number
@@ -83,13 +83,18 @@ Details, quotes and the full per-build table are in `docs/ITERATIONS.md`.
   — `results/linear_s1t_gate_35a63b96/`.
 * The on-card walker matches the host walker and the DP optimum on 13 local cases
   (`make test`, runs on a laptop).
+* **Independent software cross-check** ([`docs/VERIFICATION.md`](docs/VERIFICATION.md), `make verify`): the PE-array model,
+  both walkers and the **real kernel source** (compiled on a laptop against stand-in `hls_stream`/`hls_task` headers) agree with
+  a pure-Python DP, Biopython and the edit-distance identity on ≈ 7,700 generated cases at each of 128 / 512 / 3,968 PE
+  (1.5 G cells, 0 failures), including every pair of strings of length ≤ 3; 14 of 14 planted bugs are caught. Replaying the
+  host's seeds on a laptop reproduces both silicon runs' scores (−9,960; 81,778) and the walker's 20,002 steps / 124 fills.
+  Not covered: RTL/timing, `hw_emu`, op-for-op equality with silicon (ops were not saved), parasail (not built).
 
 **Measured, not yet at the standard needed for a claim**
 * Throughput comes from **one gate run, 3 timed repetitions**, no run-to-run spread.
 * No power measurement. No GCUPS/W.
 * The "CPU reference" in the ledger (116.9 s) is a plain scalar check, **not** a tuned
   multithreaded baseline. No GPU/FPGA comparison is made here yet.
-* Independent software cross-check (parasail/SSW) is not set up yet.
 
 **Known limitations**
 * Global alignment only; the difference-recurrence trick is specific to the scoring set
@@ -123,7 +128,8 @@ make bench XCLBIN=build/hw/nw_tile_u50.xclbin  # 181 kbp, 3 reps
 ```
 linear/    headline design (S1t): src/ kernel + walker, host/, test/, cfg/ (HLS + link), tools/
 results/   raw run outputs and the hardware ledgers the numbers above come from
-docs/      ARCHITECTURE.md, ITERATIONS.md, ENVIRONMENT.md, WORKLOG.md (what was done, found, still open)
+docs/      ARCHITECTURE.md, ITERATIONS.md, VERIFICATION.md, ENVIRONMENT.md, WORKLOG.md (what was done, found, still open)
+linear/verify/  laptop verification harness (`make verify`); results in results/verification/
 ```
 
 License: [MIT](LICENSE).

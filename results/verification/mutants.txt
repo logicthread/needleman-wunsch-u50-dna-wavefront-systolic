@@ -1,0 +1,11 @@
+snapshot_removed: caught  first-failing-checks: wave==gold(x10) host==gold(x3) dirs_path==gold(x3) dirs==py_dirs(x3) 
+lut_entry_flipped: caught  first-failing-checks: dirs==py_dirs(x25) 
+lut_tiebreak_changed: caught  first-failing-checks: dirs==py_dirs(x25) 
+eq_lut_unreachable_entry: survived, AS EXPECTED (equivalent mutant: that table slot is never indexed; see docs/ARCHITECTURE.md section 3, 18 of 128 reachable)
+band_boundary_dropped: caught  first-failing-checks: wave==gold(x8) host==gold(x4) dirs_path==gold(x4) card_score==gold(x4) 
+score_offset: caught  first-failing-checks: wave==gold(x25) 
+dv_reset_wrong: caught  first-failing-checks: wave==gold(x25) 
+walker_diag_step: caught  first-failing-checks: card_score==gold(x9) card_ops_rescore==gold(x8) card_ops==host_ops(x8) 
+walker_wrong_half_beat: caught  first-failing-checks: card_score==gold(x9) card_ops_rescore==gold(x8) card_ops==host_ops(x8) 
+walker_leading_edge: caught  first-failing-checks: card_status==0(x7) card_score==gold(x6) card_ops_rescore==gold(x6) card_ops==host_ops(x6) 
+mutants caught: 9 / 9

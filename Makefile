@@ -2,6 +2,7 @@
 # Build output goes to build/.  `make help` lists targets.
 #
 # STATUS OF EACH TARGET (see docs/ENVIRONMENT.md and docs/WORKLOG.md):
+#   verify  laptop-only, see docs/VERIFICATION.md (VERIFIED on macOS).
 #   test    runs on any machine with clang + python3 + the ap_int headers (VERIFIED on macOS).
 #   sw_emu / hw_emu / hw / host / run / bench need Vitis 2025.1 + XRT (+ a U50 card for
 #           run/bench). They are transcribed from the scripts that produced the measured
@@ -25,9 +26,9 @@ BENCH_ARGS ?= --check-bands 2 --check-n 20000 --perf-bands 46 --perf-n 181019 --
 PBLOCK   := $(if $(filter 3968,$(PE)),$(CURDIR)/linear/cfg/pblock_3968c.tcl,)
 XCLBIN   ?= $(BUILD)/hw/$(KERNEL).xclbin
 
-.PHONY: help test sw_emu hw_emu hw host run bench clean
+.PHONY: help test verify sw_emu hw_emu hw host run bench clean
 help:
-	@echo "targets: test | sw_emu | hw_emu | hw | host | run | bench | clean"
+	@echo "targets: test | verify | sw_emu | hw_emu | hw | host | run | bench | clean"
 	@echo "vars: PE=$(PE) TILE_PE=$(TILE_PE) (tiles=$(TILES)) FREQ=$(FREQ) PLATFORM=$(PLATFORM)"
 	@echo "      AP_INT_INC=<.../HLS_arbitrary_Precision_Types/include> is required by 'test'"
 	@echo "emulation needs a small array, e.g.  make sw_emu PE=512"
@@ -36,6 +37,10 @@ help:
 test:
 	@test -n "$(AP_INT_INC)" || { echo "set AP_INT_INC (see docs/ENVIRONMENT.md)"; exit 2; }
 	AP_INT_INC=$(AP_INT_INC) bash linear/scripts/walk_local.sh 512
+
+# ---- full laptop verification (docs/VERIFICATION.md): needs AP_INT_INC and PY=<python with biopython>; ~21 min (QUICK=1: ~2 min)
+verify:
+	linear/verify/verify_all.sh
 
 # ---- Vitis flows (run `source scripts/env.sh` first) ----
 $(BUILD)/%/link.cfg:

@@ -1,0 +1,23 @@
+  (biopython took 0 s)
+[check] m=7936 n=20000 seed=12345   models ran in 1 s
+  OK   CPU reference score on card run    silicon    -9960   replay    -9960   [C golden nw_align_ref]
+  OK   kernel score printed by the card   silicon    -9960   replay    -9960   [PE-array model nw_wave_scalar NW_PE=3968]
+  OK   CPU reference score on card run    silicon    -9960   replay    -9960   [Biopython PairwiseAligner]
+  OK   card walker status                 silicon        0   replay        0   [wv_tb_walk (kernel source)]
+  OK   card walker ops                    silicon    20002   replay    20002   [wv_tb_walk]
+  OK   card walker cache fills            silicon      124   replay      124   [wv_tb_walk]
+  OK   card path score                    silicon    -9960   replay    -9960   [wv_tb_walk]
+  OK   independent re-score of replayed ops: -9960 (ends at 0,0)
+[check] REAL KERNEL (hls stand-ins) ran in 6 s
+  OK   kernel score mem[S_OFF]            silicon    -9960   replay    -9960   [kernel_tile_1b_s1t.cpp via stand-ins]
+  OK   on-card walker status              silicon        0   replay        0   [kernel_tile_1b_s1t.cpp via stand-ins]
+  OK   on-card walker ops                 silicon    20002   replay    20002   [kernel_tile_1b_s1t.cpp via stand-ins]
+  OK   on-card walker cache fills         silicon      124   replay      124   [kernel_tile_1b_s1t.cpp via stand-ins]
+  OK   on-card path score                 silicon    -9960   replay    -9960   [kernel_tile_1b_s1t.cpp via stand-ins]
+  OK   kernel's on-card ops == host walker over the kernel's own beats (first diff -1)
+  (biopython took 41 s)
+[perf] m=182528 n=181019 seed=12346   models ran in 51 s
+  OK   CPU reference score on card run    silicon    81778   replay    81778   [C golden nw_align_ref]
+  OK   kernel score printed by the card   silicon    81778   replay    81778   [PE-array model nw_wave_scalar NW_PE=3968]
+  OK   CPU reference score on card run    silicon    81778   replay    81778   [Biopython PairwiseAligner]
+REPLAY MATCHES SILICON

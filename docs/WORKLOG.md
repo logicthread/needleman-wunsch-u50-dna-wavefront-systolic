@@ -129,3 +129,26 @@ quotations) as evidence of who decided what; review before pushing.
 
 ### Not done
 No cycle-accurate simulation of the 3,968-PE kernel; no re-run on the card.
+
+## 2026-11-28 — Step 4: verification (`docs/VERIFICATION.md`, `linear/verify/`)
+
+### What was done
+1. Built a laptop harness (`linear/verify/`): deterministic case generator (~7,700 cases per array size, incl. every pair of strings of length ≤ 3),
+   a driver for the repo's models (C golden, PE-array model, host walker, on-card walker), a driver for the **real kernel source** compiled
+   against ~60-line stand-ins for `hls_stream.h` / `hls_task.h`, and a judge that compares with independent references
+   (pure-Python DP incl. full direction matrix, Biopython, Levenshtein identity) and re-scores the walker's ops itself.
+2. Ran it at 128 / 512 / 3,968 PE (models) and 512 / 3,968 PE (kernel): 0 failures (§3, §4 of VERIFICATION.md).
+3. Replayed both silicon runs with the host's xorshift seeds: scores and the check run's walker counts match the card (§6).
+4. Negative controls: 14 planted bugs, 14 caught; one equivalent mutant survives, confirming "18 of 128 entries reachable" (§7).
+
+### Findings (files win)
+* **My own harness bug**: "model not run" marker −9 collided with a legal score; 5 of 230 random cases skipped checks until a count mismatch exposed it. Fixed and the whole run repeated.
+* Archived Vitis evidence is thinner than "hundreds of cases": 22 / 23 csim cases, 5 RTL cosim cases at 512 PE (summary in `results/verification/vitis_archived_s1t_summary.txt`).
+* `nw.h` / `nw_ref.c` still document the earlier Myers design and declare functions that are not in this repo.
+* `K6 n=NMIN g=0` label in the testbench is stale (g = 640).
+
+### Not done / UNKNOWN
+* parasail not built (needs autotools or a source build from GitHub; not approved). SSW is a local aligner and cannot check a global score.
+* No Vitis here: `hw_emu`, `sw_emu`, RTL cosim at 3,968 PE not run.
+* Card op stream was not saved: op-for-op equality with silicon UNKNOWN (settle with an md5 of the ops buffer in the host).
+* The perf run's 198,650 steps / 1,426 fills are not replayed (needs a 33 GB direction matrix).
